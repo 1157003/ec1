@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>苗栗優選 | Miaoli Select - 山城的美好選物</title>
+    <!-- Google Fonts: Noto Serif TC (襯線體) & Noto Sans TC (無襯線體) -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&family=Noto+Serif+TC:wght@600;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome 圖示 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS 變數設定 --- */
+        :root {
+            --bg-color: #F9F8F4;      /* 米白色 */
+            --primary-color: #4A5D4E; /* 深苔蘚綠 */
+            --accent-color: #8D6E63;  /* 木質棕 */
+            --text-color: #333333;
+            --white: #FFFFFF;
+            --transition: all 0.3s ease;
+        }
+
+        /* --- 基礎樣式 --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Noto Serif TC', serif;
+        }
+
+        /* --- 導覽列 --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        nav.scrolled {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px 5%;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 400;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .cart-icon {
+            cursor: pointer;
+            position: relative;
+            font-size: 1.2rem;
+        }
+
+        #cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--accent-color);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 50%;
+        }
+
+        /* --- 英雄區 --- */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=2000') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            letter-spacing: 5px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        /* --- 商品區 --- */
+        .section-title {
+            text-align: center;
+            padding: 80px 0 40px;
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            padding: 0 10%;
+            margin-bottom: 80px;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .product-img {
+            height: 350px;
+            overflow: hidden;
+        }
+
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .product-card:hover .product-img img {
+            transform: scale(1.1);
+        }
+
+        .product-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .product-price {
+            color: var(--accent-color);
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .add-to-cart {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .add-to-cart:hover {
+            background: var(--accent-color);
+        }
+
+        /* --- 側邊購物車 --- */
+        .cart-sidebar {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 350px;
+            height: 100%;
+            background: var(--white);
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            z-index: 2000;
+            padding: 30px;
+            transition: 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .cart-items {
+            flex-grow: 1;
+            overflow-y: auto;
+            margin: 20px 0;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .cart-footer {
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .total-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        /* --- 頁腳 --- */
+        footer {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 40px 10%;
+            text-align: center;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            margin: 0 10px;
+            font-size: 1.5rem;
+        }
+
+        /* 響應式微調 */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-links { display: none; }
+            .cart-sidebar { width: 100%; right: -100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 導覽列 -->
+    <nav id="navbar">
+        <div class="logo">苗栗優選</div>
+        <ul class="nav-links">
+            <li><a href="#">首頁</a></li>
+            <li><a href="#products">精選商品</a></li>
+            <li><a href="#">品牌故事</a></li>
+        </ul>
+        <div class="cart-icon" onclick="toggleCart()">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span id="cart-count">0</span>
+        </div>
+    </nav>
+
+    <!-- 英雄區 -->
+    <section class="hero">
+        <h1>山境選物</h1>
+        <p>將苗栗的泥土與微風，打包進你的生活</p>
+    </section>
+
+    <!-- 商品展示區 -->
+    <h2 class="section-title" id="products">精選在地小物</h2>
+    <div class="product-grid" id="product-container">
+        <!-- 商品由 JS 動態生成 -->
+    </div>
+
+    <!-- 側邊購物車 -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>購物清單</h3>
+            <i class="fa-solid fa-xmark" style="cursor:pointer" onclick="toggleCart()"></i>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- 購物車項目 -->
+        </div>
+        <div class="cart-footer">
+            <div class="total-price">
+                <span>總計</span>
+                <span id="total-amount">NT$ 0</span>
+            </div>
+            <button class="checkout-btn" onclick="checkout()">前往結帳</button>
+        </div>
+    </div>
+
+    <!-- 頁腳 -->
+    <footer>
+        <p>© 2026 苗栗優選 Miaoli Select. 一份來自山城的禮物</p>
+        <div class="footer-links" style="margin-top: 20px;">
+            <a href="#"><i class="fa-brands fa-github"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        // 1. 商品資料庫
+        const products = [
+            { id: 1, name: "古法酸柑茶", price: 850, img: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&q=80&w=500" },
+            { id: 2, name: "苗栗公館花蜜", price: 600, img: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&q=80&w=500" },
+            { id: 3, name: "柴燒手感陶杯", price: 1200, img: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&q=80&w=500" },
+            { id: 4, name: "手作樟木精油", price: 450, img: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&q=80&w=500" },
+            { id: 5, name: "客家藍染方巾", price: 550, img: "https://images.unsplash.com/photo-1520032525096-7bd04a94b5a4?auto=format&fit=crop&q=80&w=500" },
+            { id: 6, name: "東方美人特選茶", price: 1500, img: "https://images.unsplash.com/photo-1563911302283-d2bc129e7570?auto=format&fit=crop&q=80&w=500" }
+        ];
+
+        let cart = [];
+
+        // 2. 初始化商品網格
+        const productContainer = document.getElementById('product-container');
+        function displayProducts() {
+            productContainer.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="${product.img}" alt="${product.name}">
+                    </div>
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p class="product-price">NT$ ${product.price}</p>
+                        <button class="add-to-cart" onclick="addToCart(${product.id})">加入購物車</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 3. 購物車邏輯
+        function toggleCart() {
+            document.getElementById('cart-sidebar').classList.toggle('active');
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            const exist = cart.find(item => item.id === id);
+            if(exist) {
+                exist.qty++;
+            } else {
+                cart.push({...product, qty: 1});
+            }
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            const cartCount = document.getElementById('cart-count');
+            const totalAmount = document.getElementById('total-amount');
+            
+            cartItems.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <span>${item.name} x ${item.qty}</span>
+                    <span>NT$ ${item.price * item.qty}</span>
+                    <i class="fa-solid fa-trash" style="cursor:pointer; color:#ccc" onclick="removeFromCart(${item.id})"></i>
+                </div>
+            `).join('');
+
+            const count = cart.reduce((acc, item) => acc + item.qty, 0);
+            const total = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+            
+            cartCount.innerText = count;
+            totalAmount.innerText = `NT$ ${total}`;
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCart();
+        }
+
+        function checkout() {
+            if(cart.length === 0) return alert("您的購物車是空的");
+            alert("感謝您的訂購！這是一個 Demo 網站，訂單尚未實際發出。");
+            cart = [];
+            updateCart();
+            toggleCart();
+        }
+
+        // 4. 滾動效果
+        window.onscroll = () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+        };
+
+        // 啟動
+        displayProducts();
+    </script>
+</body>
+</html>
